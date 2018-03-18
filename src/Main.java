@@ -10,10 +10,10 @@ public class Main {
                 "    SELECT sq1, sq2 \n" +
                 "    FROM real_table) as sq, rt";
         String test_query_1 = "SELECT column1 FROM (SELECT col2 AS column1 FROM real_table)";
-        String test_query_2 = "SELECT column1 FROM (SELECT col2 AS column1 FROM (SELECT column3 AS col2 FROM nested_table))";
+        String test_query_2 = "SELECT sq.column1, a1.column2, a2.column3 FROM (SELECT col2 AS column1 FROM (SELECT column3 AS col2 FROM nested_table)) AS sq, t1 AS a1,t2 AS a2 ";
 
         LookupBuilder builder = new LookupBuilder();
-        CharStream stream = CharStreams.fromString(test_query);
+        CharStream stream = CharStreams.fromString(test_query_2);
         bigqueryLexer lexer = new bigqueryLexer(stream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         bigqueryParser parser = new bigqueryParser(tokenStream);

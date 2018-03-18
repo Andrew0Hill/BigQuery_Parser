@@ -47,7 +47,7 @@ public class LookupBuilder extends bigqueryBaseListener{
             Table t = new Table();
             t.table_alias = table_alias;
             t.table_name = table_name;
-            current_table.lookup_table.put(table_name,t);
+            current_table.lookup_table.put(table_alias,t);
         }
     }
 
