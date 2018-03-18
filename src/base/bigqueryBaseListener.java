@@ -1,4 +1,5 @@
 // Generated from C:/Users/96ahi/Documents/BigQuery_Parser/src\bigquery.g4 by ANTLR 4.7
+package base;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -10,6 +11,18 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * of the available methods.
  */
 public class bigqueryBaseListener implements bigqueryListener {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParse(bigqueryParser.ParseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParse(bigqueryParser.ParseContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -142,18 +155,6 @@ public class bigqueryBaseListener implements bigqueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitHaving_statement(bigqueryParser.Having_statementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterWindow_statement(bigqueryParser.Window_statementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitWindow_statement(bigqueryParser.Window_statementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -303,18 +304,6 @@ public class bigqueryBaseListener implements bigqueryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterField_path(bigqueryParser.Field_pathContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitField_path(bigqueryParser.Field_pathContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterSstruct(bigqueryParser.SstructContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -339,18 +328,6 @@ public class bigqueryBaseListener implements bigqueryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArray_path(bigqueryParser.Array_pathContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArray_path(bigqueryParser.Array_pathContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterBool_expression(bigqueryParser.Bool_expressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -358,30 +335,6 @@ public class bigqueryBaseListener implements bigqueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBool_expression(bigqueryParser.Bool_expressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterWindow_name(bigqueryParser.Window_nameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitWindow_name(bigqueryParser.Window_nameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterWindow_definition(bigqueryParser.Window_definitionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitWindow_definition(bigqueryParser.Window_definitionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

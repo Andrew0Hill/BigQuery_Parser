@@ -1,23 +1,23 @@
-import org.antlr.runtime.ANTLRStringStream;
+import base.bigqueryLexer;
+import base.bigqueryParser;
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args){
-        String test_query = "WITH cte_1 AS (SELECT column1 AS cte_col_1, column2 AS cte_col_2, column3 FROM table1) SELECT cte_col_1, column3 FROM cte_1 GROUP BY cte_col_2";
-        ColumnExtractor ce = new ColumnExtractor();
+        String test_query = "SELECT sq.sq1, sq.sq2, rt.sq3\n" +
+                "FROM (\n" +
+                "    SELECT sq1, sq2 \n" +
+                "    FROM real_table) as sq, rt";
+        String test_query_1 = "SELECT column1 FROM (SELECT col2 AS column1 FROM real_table)";
+        String test_query_2 = "SELECT column1 FROM (SELECT col2 AS column1 FROM (SELECT column3 AS col2 FROM nested_table))";
+
+        LookupBuilder builder = new LookupBuilder();
         CharStream stream = CharStreams.fromString(test_query);
         bigqueryLexer lexer = new bigqueryLexer(stream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         bigqueryParser parser = new bigqueryParser(tokenStream);
         ParseTreeWalker walker = new ParseTreeWalker();
-        walker.walk(ce,parser.query_statement());
-
-        ce.getParsedQuery().select.forEach(e -> System.out.println(e));
+        walker.walk(builder, parser.parse());
     }
 }

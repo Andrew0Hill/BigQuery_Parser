@@ -6,6 +6,8 @@
 
 grammar bigquery; 
 // Root statement for a SELECT query
+parse : query_statement;
+
 query_statement : with_statement? query_expr;
 
 // A Query Expression can contain a Select Statement, a parenthized Query Expression, or a set operation of two or more
@@ -35,7 +37,7 @@ from_statement : FROM from_item (',' from_item )* ;
 // From Item - WIP 
 // From Items can be table expressions (project.dataset.table, Query Statements (subqueries), or a valid array expression).
 // Array expressions are still WIP
-from_item : table_expr (AS? alias_name)?  (FOR SYSTEM TIME AS OF string)? 
+from_item : table_expr (AS? alias_name)?  (FOR SYSTEM TIME AS OF string)?
 		  | from_item join_type? JOIN from_item (on_clause | using_clause)
 		  | '(' query_statement ')' (AS? alias_name)?
 		  //| field_path
@@ -43,8 +45,7 @@ from_item : table_expr (AS? alias_name)?  (FOR SYSTEM TIME AS OF string)?
 		  //| UNNEST'(' array_path ')' (AS? alias_name)? (WITH OFFSET (AS? alias_name))?
 		  //| array_path (AS? alias_name)? (WITH OFFSET (AS? alias_name))?
 		  //| with_query_name (AS? alias_name)?
-		  ;
-
+          ;
 // Where Statement can contain any boolean expression
 where_statement : WHERE bool_expression;
 
@@ -137,7 +138,7 @@ set_op : UNION (ALL | DISTINCT)?
 using_clause : USING '(' join_name (',' join_name)* ')';
 
 // Field path is WIP
-field_path : ;
+//field_path : ;
 // Struct can be the struct keyword followed by a datatype name. TODO: Need to expand this to support multiple comma separated datatypes
 sstruct : SSTRUCT '<' datatype_name '>' ;
 // Array can be the Array keyword followed by a datatype name.

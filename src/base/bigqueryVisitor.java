@@ -1,4 +1,5 @@
 // Generated from C:/Users/96ahi/Documents/BigQuery_Parser/src\bigquery.g4 by ANTLR 4.7
+package base;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -9,6 +10,12 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  * operations with no return type.
  */
 public interface bigqueryVisitor<T> extends ParseTreeVisitor<T> {
+	/**
+	 * Visit a parse tree produced by {@link bigqueryParser#parse}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParse(bigqueryParser.ParseContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link bigqueryParser#query_statement}.
 	 * @param ctx the parse tree
@@ -75,12 +82,6 @@ public interface bigqueryVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitHaving_statement(bigqueryParser.Having_statementContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link bigqueryParser#window_statement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitWindow_statement(bigqueryParser.Window_statementContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link bigqueryParser#order_clause}.
 	 * @param ctx the parse tree
@@ -154,12 +155,6 @@ public interface bigqueryVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitUsing_clause(bigqueryParser.Using_clauseContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link bigqueryParser#field_path}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitField_path(bigqueryParser.Field_pathContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link bigqueryParser#sstruct}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -172,29 +167,11 @@ public interface bigqueryVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitArray_expr(bigqueryParser.Array_exprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link bigqueryParser#array_path}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArray_path(bigqueryParser.Array_pathContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link bigqueryParser#bool_expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitBool_expression(bigqueryParser.Bool_expressionContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link bigqueryParser#window_name}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitWindow_name(bigqueryParser.Window_nameContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link bigqueryParser#window_definition}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitWindow_definition(bigqueryParser.Window_definitionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link bigqueryParser#count}.
 	 * @param ctx the parse tree

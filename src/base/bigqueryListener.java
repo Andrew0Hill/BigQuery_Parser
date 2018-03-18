@@ -1,4 +1,5 @@
 // Generated from C:/Users/96ahi/Documents/BigQuery_Parser/src\bigquery.g4 by ANTLR 4.7
+package base;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -6,6 +7,16 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  * {@link bigqueryParser}.
  */
 public interface bigqueryListener extends ParseTreeListener {
+	/**
+	 * Enter a parse tree produced by {@link bigqueryParser#parse}.
+	 * @param ctx the parse tree
+	 */
+	void enterParse(bigqueryParser.ParseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link bigqueryParser#parse}.
+	 * @param ctx the parse tree
+	 */
+	void exitParse(bigqueryParser.ParseContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link bigqueryParser#query_statement}.
 	 * @param ctx the parse tree
@@ -116,16 +127,6 @@ public interface bigqueryListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitHaving_statement(bigqueryParser.Having_statementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link bigqueryParser#window_statement}.
-	 * @param ctx the parse tree
-	 */
-	void enterWindow_statement(bigqueryParser.Window_statementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link bigqueryParser#window_statement}.
-	 * @param ctx the parse tree
-	 */
-	void exitWindow_statement(bigqueryParser.Window_statementContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link bigqueryParser#order_clause}.
 	 * @param ctx the parse tree
@@ -247,16 +248,6 @@ public interface bigqueryListener extends ParseTreeListener {
 	 */
 	void exitUsing_clause(bigqueryParser.Using_clauseContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link bigqueryParser#field_path}.
-	 * @param ctx the parse tree
-	 */
-	void enterField_path(bigqueryParser.Field_pathContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link bigqueryParser#field_path}.
-	 * @param ctx the parse tree
-	 */
-	void exitField_path(bigqueryParser.Field_pathContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link bigqueryParser#sstruct}.
 	 * @param ctx the parse tree
 	 */
@@ -277,16 +268,6 @@ public interface bigqueryListener extends ParseTreeListener {
 	 */
 	void exitArray_expr(bigqueryParser.Array_exprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link bigqueryParser#array_path}.
-	 * @param ctx the parse tree
-	 */
-	void enterArray_path(bigqueryParser.Array_pathContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link bigqueryParser#array_path}.
-	 * @param ctx the parse tree
-	 */
-	void exitArray_path(bigqueryParser.Array_pathContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link bigqueryParser#bool_expression}.
 	 * @param ctx the parse tree
 	 */
@@ -296,26 +277,6 @@ public interface bigqueryListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBool_expression(bigqueryParser.Bool_expressionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link bigqueryParser#window_name}.
-	 * @param ctx the parse tree
-	 */
-	void enterWindow_name(bigqueryParser.Window_nameContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link bigqueryParser#window_name}.
-	 * @param ctx the parse tree
-	 */
-	void exitWindow_name(bigqueryParser.Window_nameContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link bigqueryParser#window_definition}.
-	 * @param ctx the parse tree
-	 */
-	void enterWindow_definition(bigqueryParser.Window_definitionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link bigqueryParser#window_definition}.
-	 * @param ctx the parse tree
-	 */
-	void exitWindow_definition(bigqueryParser.Window_definitionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link bigqueryParser#count}.
 	 * @param ctx the parse tree
