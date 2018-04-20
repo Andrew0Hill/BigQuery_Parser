@@ -5,14 +5,17 @@ import types.Column;
 import types.Table;
 
 import java.awt.image.LookupTable;
+import java.nio.channels.SelectionKey;
 
 public class LookupBuilder extends bigqueryBaseListener{
     ParseTreeProperty<SelectTable> scoped_tables = new ParseTreeProperty<>();
+    ParseTreeProperty<Boolean> is_cte_expression = new ParseTreeProperty<>();
+    SelectTable root_table = new SelectTable(null);
     SelectTable current_table;
     @Override
     public void enterParse(bigqueryParser.ParseContext ctx){
         System.out.println("Begin parse. Creating global lookup table.");
-        current_table = new SelectTable(null);
+        current_table = root_table;
         scoped_tables.put(ctx,current_table);
     }
     public void exitParse(bigqueryParser.ParseContext ctx){
@@ -33,7 +36,42 @@ public class LookupBuilder extends bigqueryBaseListener{
             current_table.column_list.add(new Column(alias_name,column_name,table_name));
         }
     }
+    @Override public void enterWith_statement(bigqueryParser.With_statementContext ctx){
+        System.out.println("Entered WITH statement");
 
+    }
+    @Override public void exitWith_statement(bigqueryParser.With_statementContext ctx){
+        System.out.println("Exiting WITH statement");
+    }
+    @Override public void enterCte_expr(bigqueryParser.Cte_exprContext ctx){
+        is_cte_expression.put(ctx,true);
+    }
+    @Override public void exitCte_expr(bigqueryParser.Cte_exprContext ctx){
+        System.out.println("CTE Lookup Table");
+        current_table.table_name = ctx.cte_name().getText();
+        System.out.println(current_table.lookup_table);
+        current_table = current_table.parent;
+    }
+    @Override public void enterQuery_expr(bigqueryParser.Query_exprContext ctx){
+        // If this is a CTE expression
+        if(is_cte_expression.get(ctx.parent) != null){
+            System.out.println("Creating new CTE table");
+            SelectTable cte_table = new SelectTable(current_table);
+            current_table = cte_table;
+            scoped_tables.put(ctx,current_table);
+        }
+    }
+    @Override public void exitQuery_expr(bigqueryParser.Query_exprContext ctx){
+        // If a CTE expression
+        if(is_cte_expression.get(ctx.parent) != null){
+            System.out.println("Merge all Select Statement tables.");
+            for(bigqueryParser.Select_statementContext ssc : ctx.select_statement()){
+                current_table = SelectTable.merge(current_table,scoped_tables.get(ssc));
+            }
+
+            //current_table = current_table.parent;
+        }
+    }
     @Override public void enterFrom_item(bigqueryParser.From_itemContext ctx){
         // If this From_item is a Table Expression
         if (ctx.table_expr() != null){
