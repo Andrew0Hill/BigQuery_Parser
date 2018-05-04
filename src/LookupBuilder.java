@@ -1,11 +1,16 @@
 import base.*;
+import org.antlr.v4.runtime.misc.Pair;
 import org.antlr.v4.runtime.misc.Triple;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import types.Column;
 import types.Table;
 
 import java.awt.image.LookupTable;
+import java.lang.reflect.Array;
 import java.nio.channels.SelectionKey;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class LookupBuilder extends bigqueryBaseListener{
     ParseTreeProperty<SelectTable> scoped_tables = new ParseTreeProperty<>();
@@ -123,15 +128,22 @@ public class LookupBuilder extends bigqueryBaseListener{
             Object o = current_table.lookup_table.values().toArray()[0];
             if (o instanceof SelectTable){
                 SelectTable st = (SelectTable) o;
-                current_table.column_list.forEach(column -> {
-                    Column tcol = st.column_lookup.get(column.real_name);
+                for (Column column : current_table.column_list) {
+                    ArrayList<Column> columns = st.column_lookup.get(column.real_name);
+                    //Column tcol = st.column_lookup.get(column.real_name);
+                    Column tcol = null;
+                    for (Column c : columns) {
+                        if (column.real_name.equals(c.alias)) {
+                            tcol = c;
+                        }
+                    }
                     if (tcol == null) {
-                        System.out.println("Error lookup failed. Table " + st.tid + " has no column " + column.real_name );
-                    }else {
+                        System.out.println("Error lookup failed. Table " + st.tid + " has no column " + column.real_name);
+                    } else {
                         column.table_name = tcol.table_name;
                         column.real_name = tcol.real_name;
                     }
-                });
+                }
             }else{
                 Table t = (Table) o;
                 current_table.column_list.forEach(column -> column.table_name = t.table_name);
@@ -143,7 +155,13 @@ public class LookupBuilder extends bigqueryBaseListener{
                     System.out.println("Lookup failed. Table: " + current_table.tid + " has no table: " + col.table_name);
                 }else if (o instanceof SelectTable){
                     SelectTable st = (SelectTable) o;
-                    Column tcol = st.column_lookup.get(col.real_name);
+                    ArrayList<Column> columns = st.column_lookup.get(col.real_name);
+                    Column tcol = null;
+                    for(Column c : columns){
+                        if (col.real_name.equals(c.alias)){
+                            tcol = c;
+                        }
+                    }
                     if (tcol == null) {
                         System.out.println("Error lookup failed. Table " + st.tid + " has no column " + col.real_name );
                     }else {
@@ -157,7 +175,14 @@ public class LookupBuilder extends bigqueryBaseListener{
         }
 
         for (Column col : current_table.column_list){
-            current_table.column_lookup.put(col.alias,col);
+            if(current_table.column_lookup.get(col.alias) != null){
+                current_table.column_lookup.get(col.alias).add(col);
+            }else{
+                ArrayList<Column> list = new ArrayList<>();
+                list.add(col);
+                current_table.column_lookup.put(col.alias,list);
+            }
+
         }
         System.out.println(current_table.column_lookup);;
         current_table = current_table.parent;

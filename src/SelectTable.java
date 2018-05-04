@@ -1,5 +1,8 @@
+import org.antlr.v4.runtime.misc.Pair;
 import types.Column;
 import types.Table;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,7 +21,8 @@ public class SelectTable extends Table{
     HashMap<String, Table> lookup_table;
 
     // A lookup table that maps aliased columns to their real table names.
-    HashMap<String, Column> column_lookup;
+    //HashMap<Pair<String,String>, Column> column_lookup;
+    HashMap<String, ArrayList<Column>> column_lookup;
     int tid;
     SelectTable(SelectTable par){
         tid = id++;
