@@ -1,22 +1,18 @@
 import base.*;
-import org.antlr.v4.runtime.misc.Pair;
-import org.antlr.v4.runtime.misc.Triple;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import types.Column;
+import types.QueryPart;
 import types.Table;
 
-import java.awt.image.LookupTable;
-import java.lang.reflect.Array;
-import java.nio.channels.SelectionKey;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.Stack;
 
 public class LookupBuilder extends bigqueryBaseListener{
     ParseTreeProperty<SelectTable> scoped_tables = new ParseTreeProperty<>();
     ParseTreeProperty<Boolean> is_cte_expression = new ParseTreeProperty<>();
     SelectTable root_table = new SelectTable(null);
     SelectTable current_table;
+    Stack<QueryPart> part_of_query = new Stack<>();
     @Override
     public void enterParse(bigqueryParser.ParseContext ctx){
         System.out.println("Begin parse. Creating global lookup table.");
@@ -25,28 +21,33 @@ public class LookupBuilder extends bigqueryBaseListener{
     }
     public void exitParse(bigqueryParser.ParseContext ctx){
         System.out.println("Final Lookup Table:");
-        System.out.println(current_table.column_lookup);
+        System.out.println(current_table.child.column_lookup);
     }
     @Override public void enterSelect_statement(bigqueryParser.Select_statementContext ctx){
         System.out.println("Entering SELECT statement: Creating Lookup Table");
         SelectTable select = new SelectTable(current_table);
+        current_table.child = select;
         current_table = select;
         scoped_tables.put(ctx,current_table);
+        part_of_query.push(QueryPart.SELECT);
     }
     @Override public void enterAlias_expr(bigqueryParser.Alias_exprContext ctx){
         if (ctx.expr().column_expr() != null){
             String column_name = ctx.expr().column_expr().column_name().getText();
             String alias_name = ctx.alias_name() == null ? column_name : ctx.alias_name().getText();
             String table_name = ctx.expr().column_expr().table_name() == null ? "" : ctx.expr().column_expr().table_name().getText();
-            current_table.column_list.add(new Column(alias_name,column_name,table_name));
+            Stack<QueryPart> query_context = (Stack<QueryPart>) part_of_query.clone();
+            current_table.column_list.add(new Column(alias_name,column_name,table_name, query_context));
         }
     }
     @Override public void enterWith_statement(bigqueryParser.With_statementContext ctx){
         System.out.println("Entered WITH statement");
+        part_of_query.push(QueryPart.WITH);
 
     }
     @Override public void exitWith_statement(bigqueryParser.With_statementContext ctx){
         System.out.println("Exiting WITH statement");
+        part_of_query.pop();
     }
     @Override public void enterCte_expr(bigqueryParser.Cte_exprContext ctx){
         is_cte_expression.put(ctx,true);
@@ -62,6 +63,7 @@ public class LookupBuilder extends bigqueryBaseListener{
         if(is_cte_expression.get(ctx.parent) != null){
             System.out.println("Creating new CTE table");
             SelectTable cte_table = new SelectTable(current_table);
+            current_table.child = cte_table;
             current_table = cte_table;
             scoped_tables.put(ctx,current_table);
         }
@@ -73,9 +75,13 @@ public class LookupBuilder extends bigqueryBaseListener{
             for(bigqueryParser.Select_statementContext ssc : ctx.select_statement()){
                 current_table = SelectTable.merge(current_table,scoped_tables.get(ssc));
             }
-
-            //current_table = current_table.parent;
         }
+    }
+    @Override public void enterFrom_statement(bigqueryParser.From_statementContext ctx){
+        part_of_query.push(QueryPart.FROM);
+    }
+    @Override public void exitFrom_statement(bigqueryParser.From_statementContext ctx){
+        part_of_query.pop();
     }
     @Override public void enterFrom_item(bigqueryParser.From_itemContext ctx){
         // If this From_item is a Table Expression
@@ -186,5 +192,6 @@ public class LookupBuilder extends bigqueryBaseListener{
         }
         System.out.println(current_table.column_lookup);;
         current_table = current_table.parent;
+        part_of_query.pop();
     }
 }

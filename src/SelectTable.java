@@ -11,7 +11,7 @@ public class SelectTable extends Table{
     // The parent of this SELECT statement. If this is the root SELECT statement, this is NULL.
     // Otherwise (inside a CTE or Subquery) this points to the parent SELECT statement.
     SelectTable parent;
-
+    SelectTable child;
     // Contains the list of columns for the SELECT statement
     ArrayList<Column> column_list;
 
